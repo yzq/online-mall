@@ -19,5 +19,9 @@ public class CommonResult<T> {
         return new CommonResult<T>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
     }
     
+    public static CommonResult failed() {
+        return new CommonResult(ResultCode.FAILED.getCode(), ResultCode.FAILED.getMessage(), null);
+    }
+    
     
 }

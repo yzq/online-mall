@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: mall-admin
+  profiles:
+    active: dev
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    
+mybatis:
+  mapper-locations:
+    - classpath:dao/*.xml
+    - classpath*:com/**/mapper/*.xml
+
+secure:
+  ignored:
+    urls: #???????
+      - /swagger-ui/
+      - /admin/register
