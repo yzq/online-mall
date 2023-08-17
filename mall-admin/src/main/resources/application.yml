@@ -32,3 +32,4 @@ secure:
       - /actuator/**
       - /druid/**
       - /admin/register
+      - /admin/**

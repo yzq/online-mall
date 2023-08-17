@@ -1,5 +1,7 @@
 package com.macro.mall.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.github.pagehelper.PageHelper;
 import com.macro.mall.dto.UmsAdminParam;
 import com.macro.mall.mapper.UmsAdminMapper;
 import com.macro.mall.model.UmsAdmin;
@@ -39,5 +41,25 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         umsAdmin.setPassword(encodePassword);
         adminMapper.insertSelective(umsAdmin);
         return umsAdmin;
+    }
+
+    @Override
+    public int delete(Long id) {
+        int row = adminMapper.deleteByPrimaryKey(id);
+        return row;
+    }
+
+    @Override
+    public List<UmsAdmin> list(String keyword, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        UmsAdminExample umsAdminExample = new UmsAdminExample();
+        UmsAdminExample.Criteria criteria = umsAdminExample.createCriteria();
+        if (!StrUtil.isEmpty(keyword)) {
+            criteria.andUsernameLike("%" + keyword + "%");
+            umsAdminExample.or(umsAdminExample.createCriteria().andNicknameLike("%" + keyword + "%"));
+        }
+        
+        List<UmsAdmin> umsAdminList = adminMapper.selectByExample(umsAdminExample);
+        return umsAdminList;
     }
 }
