@@ -2,10 +2,11 @@ package com.macro.mall.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
+import com.macro.mall.dao.UmsAdminRoleRelationDao;
 import com.macro.mall.dto.UmsAdminParam;
 import com.macro.mall.mapper.UmsAdminMapper;
-import com.macro.mall.model.UmsAdmin;
-import com.macro.mall.model.UmsAdminExample;
+import com.macro.mall.mapper.UmsAdminRoleRelationMapper;
+import com.macro.mall.model.*;
 import com.macro.mall.service.UmsAdminService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,8 +23,15 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     
     @Autowired
     private UmsAdminMapper adminMapper;
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private UmsAdminRoleRelationDao umsAdminRoleRelationDao;
+    
+    @Autowired
+    private UmsAdminRoleRelationMapper umsAdminRoleRelationMapper;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public UmsAdmin register(UmsAdminParam umsAdminParam) {
         UmsAdmin umsAdmin = new UmsAdmin();
@@ -61,5 +70,51 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         
         List<UmsAdmin> umsAdminList = adminMapper.selectByExample(umsAdminExample);
         return umsAdminList;
+    }
+
+    @Override
+    public int update(Long id, UmsAdmin umsAdmin) {
+        umsAdmin.setId(id);
+        UmsAdmin rawAdmin = adminMapper.selectByPrimaryKey(id);
+        if (rawAdmin.getPassword().equals(umsAdmin.getPassword())) {
+            umsAdmin.setPassword(null);
+        } else {
+            if (StrUtil.isEmpty(umsAdmin.getPassword())) {
+                umsAdmin.setPassword(null);
+            } else {
+                umsAdmin.setPassword(passwordEncoder.encode(umsAdmin.getPassword()));
+            }
+        }
+        int count = adminMapper.updateByPrimaryKeySelective(umsAdmin);
+        return count;
+    }
+    
+    @Override
+    public UmsAdmin getItem(Long id) {
+        UmsAdmin umsAdmin = adminMapper.selectByPrimaryKey(id);
+        return umsAdmin;
+    }
+
+    @Override
+    public List<UmsRole> getRoleList(Long adminId) {
+        List<UmsRole> roleList = umsAdminRoleRelationDao.getRoleList(adminId);
+        return roleList;
+    }
+
+    @Override
+    public int updateRole(Long adminId, List<Long> roleIds) {
+        UmsAdminRoleRelationExample umsAdminRoleRelationExample = new UmsAdminRoleRelationExample();
+        UmsAdminRoleRelationExample.Criteria criteria = umsAdminRoleRelationExample.createCriteria();
+        criteria.andUmsAdminIdEqualTo(adminId);
+        umsAdminRoleRelationMapper.deleteByExample(umsAdminRoleRelationExample);
+        List<UmsAdminRoleRelation> umsAdminRoleRelationList = new ArrayList<>();
+        for (Long roleId : roleIds) {
+            UmsAdminRoleRelation umsAdminRoleRelation = new UmsAdminRoleRelation();
+            umsAdminRoleRelation.setUmsAdminId(adminId);
+            umsAdminRoleRelation.setUmsRoleId(roleId);
+            umsAdminRoleRelationList.add(umsAdminRoleRelation);
+        }
+        int count = umsAdminRoleRelationDao.insertList(umsAdminRoleRelationList);
+        return count;
     }
 }
