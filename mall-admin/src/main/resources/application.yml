@@ -10,7 +10,10 @@ spring:
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml
-    - classpath*:com/**/mapper/*.xml
+    - classpath*:com/**/mapper/*.
+  configuration:
+    # 下划线自动转驼峰
+    map-underscore-to-camel-case: true
 jwt:
   tokenHeader: Authorization
   secret: mall-admin-secret

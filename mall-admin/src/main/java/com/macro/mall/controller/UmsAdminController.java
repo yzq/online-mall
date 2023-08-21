@@ -88,7 +88,7 @@ public class UmsAdminController {
     }
 
     @ApiOperation("获取用户的角色列表")
-    @RequestMapping(value = "/role/{id}")
+    @RequestMapping(value = "/role/{adminId}", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<List<UmsRole>> getRoleList(@PathVariable("adminId") Long adminId) {
         List<UmsRole> roleList = adminService.getRoleList(adminId);
@@ -96,7 +96,7 @@ public class UmsAdminController {
     }
 
     @ApiOperation("给用户分配角色")
-    @RequestMapping(value = "role/update")
+    @RequestMapping(value = "role/update", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult updateRole(@RequestParam("adminId") Long adminId, @RequestParam("roleIds") List<Long> roleIds) {
         int count = adminService.updateRole(adminId, roleIds);

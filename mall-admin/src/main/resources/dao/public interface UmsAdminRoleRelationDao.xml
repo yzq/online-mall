@@ -5,4 +5,10 @@
         select ur.* from ums_admin_role_relation ar left join ums_role ur on ur.id = ar.ums_role_id
         where ar.ums_admin_id = #{adminId}
     </select>
-</mapper>
+    <insert id="insertList">
+        insert into ums_admin_role_relation(ums_admin_id, ums_role_id) values
+        <foreach collection="UmsAdminRoleRelationList" separator="," item="item">
+            (#{item.umsAdminId}, #{item.umsRoleId})
+        </foreach>
+    </insert>
+</mapper> 
