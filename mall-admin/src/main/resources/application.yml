@@ -36,3 +36,4 @@ secure:
       - /druid/**
       - /admin/register
       - /admin/**
+      - /role/**
