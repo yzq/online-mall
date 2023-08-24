@@ -2,13 +2,18 @@ package com.macro.mall.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
+import com.macro.mall.dao.UmsRoleMenuRelationDao;
 import com.macro.mall.mapper.UmsRoleMapper;
+import com.macro.mall.mapper.UmsRoleMenuRelationMapper;
 import com.macro.mall.model.UmsRole;
 import com.macro.mall.model.UmsRoleExample;
+import com.macro.mall.model.UmsRoleMenuRelation;
+import com.macro.mall.model.UmsRoleMenuRelationExample;
 import com.macro.mall.service.UmsRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +21,11 @@ import java.util.List;
 public class UmsRoleServiceImpl implements UmsRoleService {
     @Autowired
     private UmsRoleMapper umsRoleMapper;
+    
+    @Autowired
+    private UmsRoleMenuRelationMapper roleMenuRelationMapper;
+    @Autowired
+    private UmsRoleMenuRelationDao roleMenuRelationDao;
     @Override
     public int create(UmsRole umsRole) {
         umsRole.setCreateTime(new Date());
@@ -46,5 +56,21 @@ public class UmsRoleServiceImpl implements UmsRoleService {
         }
         List<UmsRole> roleList = umsRoleMapper.selectByExample(example);
         return roleList;
+    }
+
+    @Override
+    public int allocMenu(Long roleId, List<Long> menuIds) {
+        UmsRoleMenuRelationExample example = new UmsRoleMenuRelationExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        roleMenuRelationMapper.deleteByExample(example);
+        List<UmsRoleMenuRelation> roleMenuRelationList = new ArrayList<>();
+        for (Long menuId : menuIds) {
+            UmsRoleMenuRelation roleMenuRelation = new UmsRoleMenuRelation();
+            roleMenuRelation.setRoleId(roleId);
+            roleMenuRelation.setMenuId(menuId);
+            roleMenuRelationList.add(roleMenuRelation);
+        }
+        int count = roleMenuRelationDao.insertList(roleMenuRelationList);
+        return count;
     }
 }

@@ -12,4 +12,6 @@ public interface UmsRoleService {
 
     int delete(List<Long> ids);
     List<UmsRole> list(String keyword, Integer pageNum, Integer pageSize);
+
+    int allocMenu(Long roleId, List<Long> menuIds);
 }

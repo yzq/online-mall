@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,6 +73,17 @@ public class UmsRoleController {
         UmsRole umsRole = new UmsRole();
         umsRole.setStatus(status);
         int count = roleService.update(id, umsRole);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("分配菜单")
+    @RequestMapping(value = "/allocMenu", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult allocMenu(@RequestParam(value = "roleId") Long roleId, @RequestParam(value = "menuIds") List<Long> menuIds) {
+        int count = roleService.allocMenu(roleId, menuIds);
         if (count > 0) {
             return CommonResult.success(count);
         }
