@@ -79,7 +79,7 @@ public class UmsAdminController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("获取制定用户信息")
+    @ApiOperation("获取指定用户信息")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult getItem(@PathVariable("id") Long id) {
