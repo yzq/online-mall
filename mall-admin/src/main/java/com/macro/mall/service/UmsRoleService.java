@@ -2,6 +2,7 @@ package com.macro.mall.service;
 
 import com.macro.mall.model.UmsAdmin;
 import com.macro.mall.model.UmsMenu;
+import com.macro.mall.model.UmsResource;
 import com.macro.mall.model.UmsRole;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface UmsRoleService {
     int allocMenu(Long roleId, List<Long> menuIds);
 
     List<UmsMenu> listMenu(Long id);
+
+    List<UmsResource> listResource(Long RoleId);
 }

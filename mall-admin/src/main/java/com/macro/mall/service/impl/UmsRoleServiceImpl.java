@@ -3,6 +3,7 @@ package com.macro.mall.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.dao.UmsRoleMenuRelationDao;
+import com.macro.mall.dao.UmsRoleResourceRelationDao;
 import com.macro.mall.mapper.UmsRoleMapper;
 import com.macro.mall.mapper.UmsRoleMenuRelationMapper;
 import com.macro.mall.model.*;
@@ -23,6 +24,8 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     private UmsRoleMenuRelationMapper roleMenuRelationMapper;
     @Autowired
     private UmsRoleMenuRelationDao roleMenuRelationDao;
+    @Autowired
+    private UmsRoleResourceRelationDao roleResourceRelationDao;
     @Override
     public int create(UmsRole umsRole) {
         umsRole.setCreateTime(new Date());
@@ -75,5 +78,11 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     public List<UmsMenu> listMenu(Long id) {
         List<UmsMenu> umsMenuList = roleMenuRelationDao.listMenu(id);
         return umsMenuList;
+    }
+
+    @Override
+    public List<UmsResource> listResource(Long roleId) {
+        List<UmsResource> resourceList = roleResourceRelationDao.listResource(roleId);
+        return resourceList;
     }
 }

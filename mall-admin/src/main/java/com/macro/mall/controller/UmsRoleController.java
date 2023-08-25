@@ -3,6 +3,7 @@ package com.macro.mall.controller;
 import com.macro.mall.api.CommonPage;
 import com.macro.mall.api.CommonResult;
 import com.macro.mall.model.UmsMenu;
+import com.macro.mall.model.UmsResource;
 import com.macro.mall.model.UmsRole;
 import com.macro.mall.service.UmsRoleService;
 import io.swagger.annotations.Api;
@@ -97,5 +98,13 @@ public class UmsRoleController {
     public CommonResult<List<UmsMenu>> listMenu(@PathVariable Long id) {
         List<UmsMenu> menuList = roleService.listMenu(id);
         return CommonResult.success(menuList);
+    }
+
+    @ApiOperation("查询已分配的资源")
+    @RequestMapping(value = "/listResource/{roleId}", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<List<UmsResource>> listResource(@PathVariable Long roleId) {
+        List<UmsResource> resourceList = roleService.listResource(roleId);
+        return CommonResult.success(resourceList);
     }
 }
