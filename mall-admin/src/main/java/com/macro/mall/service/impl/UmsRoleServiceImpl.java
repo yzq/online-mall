@@ -5,10 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.macro.mall.dao.UmsRoleMenuRelationDao;
 import com.macro.mall.mapper.UmsRoleMapper;
 import com.macro.mall.mapper.UmsRoleMenuRelationMapper;
-import com.macro.mall.model.UmsRole;
-import com.macro.mall.model.UmsRoleExample;
-import com.macro.mall.model.UmsRoleMenuRelation;
-import com.macro.mall.model.UmsRoleMenuRelationExample;
+import com.macro.mall.model.*;
 import com.macro.mall.service.UmsRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,5 +69,11 @@ public class UmsRoleServiceImpl implements UmsRoleService {
         }
         int count = roleMenuRelationDao.insertList(roleMenuRelationList);
         return count;
+    }
+
+    @Override
+    public List<UmsMenu> listMenu(Long id) {
+        List<UmsMenu> umsMenuList = roleMenuRelationDao.listMenu(id);
+        return umsMenuList;
     }
 }

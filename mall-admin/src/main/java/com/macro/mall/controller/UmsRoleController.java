@@ -2,6 +2,7 @@ package com.macro.mall.controller;
 
 import com.macro.mall.api.CommonPage;
 import com.macro.mall.api.CommonResult;
+import com.macro.mall.model.UmsMenu;
 import com.macro.mall.model.UmsRole;
 import com.macro.mall.service.UmsRoleService;
 import io.swagger.annotations.Api;
@@ -88,5 +89,13 @@ public class UmsRoleController {
             return CommonResult.success(count);
         }
         return CommonResult.failed();
+    }
+
+    @ApiOperation("查询已分配的菜单")
+    @RequestMapping(value = "/listMenu/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<List<UmsMenu>> listMenu(@PathVariable Long id) {
+        List<UmsMenu> menuList = roleService.listMenu(id);
+        return CommonResult.success(menuList);
     }
 }
