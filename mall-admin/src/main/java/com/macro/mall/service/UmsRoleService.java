@@ -20,4 +20,6 @@ public interface UmsRoleService {
     List<UmsMenu> listMenu(Long id);
 
     List<UmsResource> listResource(Long RoleId);
+
+    int allocResource(Long roleId, List<Long> resourceIds);
 }

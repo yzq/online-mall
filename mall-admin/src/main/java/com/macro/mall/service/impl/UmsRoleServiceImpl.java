@@ -6,6 +6,7 @@ import com.macro.mall.dao.UmsRoleMenuRelationDao;
 import com.macro.mall.dao.UmsRoleResourceRelationDao;
 import com.macro.mall.mapper.UmsRoleMapper;
 import com.macro.mall.mapper.UmsRoleMenuRelationMapper;
+import com.macro.mall.mapper.UmsRoleResourceRelationMapper;
 import com.macro.mall.model.*;
 import com.macro.mall.service.UmsRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     private UmsRoleMenuRelationDao roleMenuRelationDao;
     @Autowired
     private UmsRoleResourceRelationDao roleResourceRelationDao;
+    @Autowired
+    private UmsRoleResourceRelationMapper roleResourceRelationMapper;
     @Override
     public int create(UmsRole umsRole) {
         umsRole.setCreateTime(new Date());
@@ -84,5 +87,21 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     public List<UmsResource> listResource(Long roleId) {
         List<UmsResource> resourceList = roleResourceRelationDao.listResource(roleId);
         return resourceList;
+    }
+
+    @Override
+    public int allocResource(Long roleId, List<Long> resourceIds) {
+        UmsRoleResourceRelationExample example = new UmsRoleResourceRelationExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        roleResourceRelationMapper.deleteByExample(example);
+        List<UmsRoleResourceRelation> roleResourceRelationList = new ArrayList<>();
+        for (Long resourceId : resourceIds) {
+            UmsRoleResourceRelation roleResourceRelation = new UmsRoleResourceRelation();
+            roleResourceRelation.setRoleId(roleId);
+            roleResourceRelation.setResourceId(resourceId);
+            roleResourceRelationList.add(roleResourceRelation);
+        }
+        int count = roleResourceRelationDao.insertList(roleResourceRelationList);
+        return count;
     }
 }

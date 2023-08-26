@@ -6,4 +6,11 @@
             on rrr.resource_id=ur.id
         where rrr.role_id = #{roleId}
     </select>
+    
+    <insert id="insertList">
+        insert into ums_role_resource_relation(role_id, resource_id) values
+        <foreach collection="roleResourceRelationList" separator="," item="item">
+            (#{item.roleId}, #{item.resourceId})
+        </foreach>
+    </insert>
 </mapper>
