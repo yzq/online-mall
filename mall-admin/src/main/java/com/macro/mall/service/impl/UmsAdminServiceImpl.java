@@ -8,13 +8,16 @@ import com.macro.mall.mapper.UmsAdminMapper;
 import com.macro.mall.mapper.UmsAdminRoleRelationMapper;
 import com.macro.mall.model.*;
 import com.macro.mall.service.UmsAdminService;
+import org.graalvm.util.CollectionsUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -37,25 +40,24 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         UmsAdmin umsAdmin = new UmsAdmin();
         BeanUtils.copyProperties(umsAdminParam, umsAdmin);
         umsAdmin.setCreateTime(new Date());
-        umsAdmin.setStatus(1);
+//        umsAdmin.setStatus(1);
         UmsAdminExample adminExample = new UmsAdminExample();
         UmsAdminExample.Criteria criteria = adminExample.createCriteria();
         criteria.andUsernameEqualTo(umsAdmin.getUsername());
         List<UmsAdmin> umsAdminList = adminMapper.selectByExample(adminExample);
-        if (umsAdminList.size() != 0) {
+        if (umsAdminList.size() > 0) {
             return null;
         }
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodePassword = passwordEncoder.encode(umsAdmin.getPassword());
         umsAdmin.setPassword(encodePassword);
-        adminMapper.insertSelective(umsAdmin);
+        adminMapper.insert(umsAdmin);
         return umsAdmin;
     }
 
     @Override
     public int delete(Long id) {
-        int row = adminMapper.deleteByPrimaryKey(id);
-        return row;
+        int count = adminMapper.deleteByPrimaryKey(id);
+        return count;
     }
 
     @Override
@@ -103,18 +105,21 @@ public class UmsAdminServiceImpl implements UmsAdminService {
 
     @Override
     public int updateRole(Long adminId, List<Long> roleIds) {
+        int count = roleIds == null ? 0 : roleIds.size();
         UmsAdminRoleRelationExample umsAdminRoleRelationExample = new UmsAdminRoleRelationExample();
         UmsAdminRoleRelationExample.Criteria criteria = umsAdminRoleRelationExample.createCriteria();
         criteria.andUmsAdminIdEqualTo(adminId);
         umsAdminRoleRelationMapper.deleteByExample(umsAdminRoleRelationExample);
-        List<UmsAdminRoleRelation> umsAdminRoleRelationList = new ArrayList<>();
-        for (Long roleId : roleIds) {
-            UmsAdminRoleRelation umsAdminRoleRelation = new UmsAdminRoleRelation();
-            umsAdminRoleRelation.setUmsAdminId(adminId);
-            umsAdminRoleRelation.setUmsRoleId(roleId);
-            umsAdminRoleRelationList.add(umsAdminRoleRelation);
+        if (CollectionUtils.isEmpty(roleIds)) {
+            List<UmsAdminRoleRelation> umsAdminRoleRelationList = new ArrayList<>();
+            for (Long roleId : roleIds) {
+                UmsAdminRoleRelation umsAdminRoleRelation = new UmsAdminRoleRelation();
+                umsAdminRoleRelation.setUmsAdminId(adminId);
+                umsAdminRoleRelation.setUmsRoleId(roleId);
+                umsAdminRoleRelationList.add(umsAdminRoleRelation);
+            }
+            umsAdminRoleRelationDao.insertList(umsAdminRoleRelationList);
         }
-        int count = umsAdminRoleRelationDao.insertList(umsAdminRoleRelationList);
         return count;
     }
 }
