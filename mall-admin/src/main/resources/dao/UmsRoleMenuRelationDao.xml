@@ -20,7 +20,11 @@
     </insert>
     
     <select id="listMenu" resultMap="UmsMenuResultMap">
-        select um.* from ums_role_menu_relation rmr left join ums_menu um on rmr.menu_id = um.id
+        select um.*
+        from ums_role_menu_relation rmr
+                 left join ums_menu um on rmr.menu_id = um.id
         where rmr.role_id = #{roleId}
+          and um.id is not NULL
+        group by um.id
     </select>
 </mapper>

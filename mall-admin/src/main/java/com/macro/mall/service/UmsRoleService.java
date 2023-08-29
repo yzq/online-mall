@@ -13,6 +13,8 @@ public interface UmsRoleService {
     int update(Long id, UmsRole umsRole);
 
     int delete(List<Long> ids);
+
+    List<UmsRole> list();
     List<UmsRole> list(String keyword, Integer pageNum, Integer pageSize);
 
     int allocMenu(Long roleId, List<Long> menuIds);

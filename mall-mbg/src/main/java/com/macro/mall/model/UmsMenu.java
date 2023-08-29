@@ -2,6 +2,7 @@ package com.macro.mall.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.Date;
 
 public class UmsMenu implements Serializable {
     private Long id;
@@ -20,6 +21,8 @@ public class UmsMenu implements Serializable {
     private String icon;
 
     private Integer hidden;
+
+    private Date createTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -87,6 +90,14 @@ public class UmsMenu implements Serializable {
         this.hidden = hidden;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -101,6 +112,7 @@ public class UmsMenu implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", icon=").append(icon);
         sb.append(", hidden=").append(hidden);
+        sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

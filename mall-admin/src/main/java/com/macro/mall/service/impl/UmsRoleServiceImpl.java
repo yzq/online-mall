@@ -11,6 +11,7 @@ import com.macro.mall.model.*;
 import com.macro.mall.service.UmsRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,8 +32,10 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     private UmsRoleResourceRelationMapper roleResourceRelationMapper;
     @Override
     public int create(UmsRole umsRole) {
+        umsRole.setAdminCount(0);
+        umsRole.setSort(0);
         umsRole.setCreateTime(new Date());
-        return umsRoleMapper.insertSelective(umsRole);
+        return umsRoleMapper.insert(umsRole);
     }
 
     @Override
@@ -51,6 +54,11 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     }
 
     @Override
+    public List<UmsRole> list() {
+        return umsRoleMapper.selectByExample(new UmsRoleExample());
+    }
+
+    @Override
     public List<UmsRole> list(String keyword, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         UmsRoleExample example = new UmsRoleExample();
@@ -63,17 +71,20 @@ public class UmsRoleServiceImpl implements UmsRoleService {
 
     @Override
     public int allocMenu(Long roleId, List<Long> menuIds) {
+        int count = menuIds == null ? 0 : menuIds.size();
         UmsRoleMenuRelationExample example = new UmsRoleMenuRelationExample();
         example.createCriteria().andRoleIdEqualTo(roleId);
         roleMenuRelationMapper.deleteByExample(example);
-        List<UmsRoleMenuRelation> roleMenuRelationList = new ArrayList<>();
-        for (Long menuId : menuIds) {
-            UmsRoleMenuRelation roleMenuRelation = new UmsRoleMenuRelation();
-            roleMenuRelation.setRoleId(roleId);
-            roleMenuRelation.setMenuId(menuId);
-            roleMenuRelationList.add(roleMenuRelation);
+        if (!CollectionUtils.isEmpty(menuIds)) {
+            List<UmsRoleMenuRelation> roleMenuRelationList = new ArrayList<>();
+            for (Long menuId : menuIds) {
+                UmsRoleMenuRelation roleMenuRelation = new UmsRoleMenuRelation();
+                roleMenuRelation.setRoleId(roleId);
+                roleMenuRelation.setMenuId(menuId);
+                roleMenuRelationList.add(roleMenuRelation);
+            }
+            roleMenuRelationDao.insertList(roleMenuRelationList);
         }
-        int count = roleMenuRelationDao.insertList(roleMenuRelationList);
         return count;
     }
 
@@ -91,17 +102,20 @@ public class UmsRoleServiceImpl implements UmsRoleService {
 
     @Override
     public int allocResource(Long roleId, List<Long> resourceIds) {
+        int count = resourceIds == null ? 0 : resourceIds.size();
         UmsRoleResourceRelationExample example = new UmsRoleResourceRelationExample();
         example.createCriteria().andRoleIdEqualTo(roleId);
         roleResourceRelationMapper.deleteByExample(example);
-        List<UmsRoleResourceRelation> roleResourceRelationList = new ArrayList<>();
-        for (Long resourceId : resourceIds) {
-            UmsRoleResourceRelation roleResourceRelation = new UmsRoleResourceRelation();
-            roleResourceRelation.setRoleId(roleId);
-            roleResourceRelation.setResourceId(resourceId);
-            roleResourceRelationList.add(roleResourceRelation);
+        if (!CollectionUtils.isEmpty(resourceIds)) {
+            List<UmsRoleResourceRelation> roleResourceRelationList = new ArrayList<>();
+            for (Long resourceId : resourceIds) {
+                UmsRoleResourceRelation roleResourceRelation = new UmsRoleResourceRelation();
+                roleResourceRelation.setRoleId(roleId);
+                roleResourceRelation.setResourceId(resourceId);
+                roleResourceRelationList.add(roleResourceRelation);
+            }
+            roleResourceRelationDao.insertList(roleResourceRelationList);
         }
-        int count = roleResourceRelationDao.insertList(roleResourceRelationList);
         return count;
     }
 }

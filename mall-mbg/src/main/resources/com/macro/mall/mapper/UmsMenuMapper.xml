@@ -10,6 +10,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="hidden" jdbcType="INTEGER" property="hidden" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, parent_id, title, level, sort, name, icon, hidden
+    id, parent_id, title, level, sort, name, icon, hidden, create_time
   </sql>
   <select id="selectByExample" parameterType="com.macro.mall.model.UmsMenuExample" resultMap="BaseResultMap">
     select
@@ -107,11 +108,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into ums_menu (parent_id, title, level, 
-      sort, name, icon, hidden
-      )
+      sort, name, icon, hidden, 
+      create_time)
     values (#{parentId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, 
-      #{sort,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{hidden,jdbcType=INTEGER}
-      )
+      #{sort,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{hidden,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.macro.mall.model.UmsMenu">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -140,6 +141,9 @@
       <if test="hidden != null">
         hidden,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="parentId != null">
@@ -162,6 +166,9 @@
       </if>
       <if test="hidden != null">
         #{hidden,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -198,6 +205,9 @@
       <if test="row.hidden != null">
         hidden = #{row.hidden,jdbcType=INTEGER},
       </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -212,7 +222,8 @@
       sort = #{row.sort,jdbcType=INTEGER},
       name = #{row.name,jdbcType=VARCHAR},
       icon = #{row.icon,jdbcType=VARCHAR},
-      hidden = #{row.hidden,jdbcType=INTEGER}
+      hidden = #{row.hidden,jdbcType=INTEGER},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -241,6 +252,9 @@
       <if test="hidden != null">
         hidden = #{hidden,jdbcType=INTEGER},
       </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -252,7 +266,8 @@
       sort = #{sort,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       icon = #{icon,jdbcType=VARCHAR},
-      hidden = #{hidden,jdbcType=INTEGER}
+      hidden = #{hidden,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

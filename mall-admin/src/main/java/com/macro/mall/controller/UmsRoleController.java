@@ -48,7 +48,7 @@ public class UmsRoleController {
     }
 
     @ApiOperation("批量删除角色")
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult delete(@RequestParam List<Long> ids) {
         int count = roleService.delete(ids);
@@ -58,8 +58,16 @@ public class UmsRoleController {
         return CommonResult.failed();
     }
 
+    @ApiOperation("获取所有角色")
+    @RequestMapping(value = "/listAll", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<List<UmsRole>> listAll() {
+        List<UmsRole> roleList = roleService.list();
+        return CommonResult.success(roleList);
+    }
+
     @ApiOperation("查询角色列表")
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<CommonPage<UmsRole>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,

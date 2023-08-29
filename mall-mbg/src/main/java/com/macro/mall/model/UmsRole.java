@@ -19,6 +19,8 @@ public class UmsRole implements Serializable {
 
     private Integer status;
 
+    private Integer sort;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -69,6 +71,14 @@ public class UmsRole implements Serializable {
         this.status = status;
     }
 
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -81,6 +91,7 @@ public class UmsRole implements Serializable {
         sb.append(", adminCount=").append(adminCount);
         sb.append(", createTime=").append(createTime);
         sb.append(", status=").append(status);
+        sb.append(", sort=").append(sort);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

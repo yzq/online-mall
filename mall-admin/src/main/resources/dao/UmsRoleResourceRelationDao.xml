@@ -2,9 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.macro.mall.dao.UmsRoleResourceRelationDao">
     <select id="listResource" resultMap="com.macro.mall.mapper.UmsResourceMapper.BaseResultMap">
-        select ur.* from ums_role_resource_relation rrr left join ums_resource ur
-            on rrr.resource_id=ur.id
+        select ur.*
+        from ums_role_resource_relation rrr
+                 left join ums_resource ur
+                           on rrr.resource_id = ur.id
         where rrr.role_id = #{roleId}
+          and ur.id is not NULL
+        group by ur.id
     </select>
     
     <insert id="insertList">

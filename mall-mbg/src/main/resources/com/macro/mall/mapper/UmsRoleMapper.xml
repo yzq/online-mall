@@ -8,6 +8,7 @@
     <result column="admin_count" jdbcType="INTEGER" property="adminCount" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, description, admin_count, create_time, status
+    id, name, description, admin_count, create_time, status, sort
   </sql>
   <select id="selectByExample" parameterType="com.macro.mall.model.UmsRoleExample" resultMap="BaseResultMap">
     select
@@ -105,9 +106,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into ums_role (name, description, admin_count, 
-      create_time, status)
+      create_time, status, sort
+      )
     values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{adminCount,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.macro.mall.model.UmsRole">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -130,6 +133,9 @@
       <if test="status != null">
         status,
       </if>
+      <if test="sort != null">
+        sort,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="name != null">
@@ -146,6 +152,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -176,6 +185,9 @@
       <if test="row.status != null">
         status = #{row.status,jdbcType=INTEGER},
       </if>
+      <if test="row.sort != null">
+        sort = #{row.sort,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -188,7 +200,8 @@
       description = #{row.description,jdbcType=VARCHAR},
       admin_count = #{row.adminCount,jdbcType=INTEGER},
       create_time = #{row.createTime,jdbcType=TIMESTAMP},
-      status = #{row.status,jdbcType=INTEGER}
+      status = #{row.status,jdbcType=INTEGER},
+      sort = #{row.sort,jdbcType=INTEGER}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -211,6 +224,9 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -220,7 +236,8 @@
       description = #{description,jdbcType=VARCHAR},
       admin_count = #{adminCount,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

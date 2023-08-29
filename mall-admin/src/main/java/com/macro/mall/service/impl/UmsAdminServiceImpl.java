@@ -8,7 +8,6 @@ import com.macro.mall.mapper.UmsAdminMapper;
 import com.macro.mall.mapper.UmsAdminRoleRelationMapper;
 import com.macro.mall.model.*;
 import com.macro.mall.service.UmsAdminService;
-import org.graalvm.util.CollectionsUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -110,7 +109,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         UmsAdminRoleRelationExample.Criteria criteria = umsAdminRoleRelationExample.createCriteria();
         criteria.andUmsAdminIdEqualTo(adminId);
         umsAdminRoleRelationMapper.deleteByExample(umsAdminRoleRelationExample);
-        if (CollectionUtils.isEmpty(roleIds)) {
+        if (!CollectionUtils.isEmpty(roleIds)) {
             List<UmsAdminRoleRelation> umsAdminRoleRelationList = new ArrayList<>();
             for (Long roleId : roleIds) {
                 UmsAdminRoleRelation umsAdminRoleRelation = new UmsAdminRoleRelation();
