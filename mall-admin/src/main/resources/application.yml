@@ -39,3 +39,4 @@ secure:
       - /admin/register
       - /admin/**
       - /role/**
+      - /menu/**

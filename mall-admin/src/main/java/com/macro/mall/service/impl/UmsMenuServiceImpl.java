@@ -4,9 +4,10 @@ import com.macro.mall.mapper.UmsMenuMapper;
 import com.macro.mall.model.UmsMenu;
 import com.macro.mall.service.UmsMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
-
+@Service
 public class UmsMenuServiceImpl implements UmsMenuService {
     @Autowired
     private UmsMenuMapper menuMapper;
