@@ -17,6 +17,17 @@ public class UmsMenuServiceImpl implements UmsMenuService {
         return menuMapper.insert(umsMenu);
     }
 
+    @Override
+    public int update(Long id, UmsMenu umsMenu) {
+        umsMenu.setId(id);
+        return menuMapper.updateByPrimaryKeySelective(umsMenu);
+    }
+
+    @Override
+    public UmsMenu getItem(Long id) {
+        return menuMapper.selectByPrimaryKey(id);
+    }
+
     private void updatelevel(UmsMenu umsMenu) {
         if (umsMenu.getParentId() == 0) {
             umsMenu.setLevel(0);
