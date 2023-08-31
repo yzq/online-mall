@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class UmsMenuServiceImpl implements UmsMenuService {
     @Autowired
     private UmsMenuMapper menuMapper;
+
     public int create(UmsMenu umsMenu) {
         umsMenu.setCreateTime(new Date());
         updatelevel(umsMenu);
@@ -52,11 +54,37 @@ public class UmsMenuServiceImpl implements UmsMenuService {
     @Override
     public List<UmsMenuNode> treeList() {
         List<UmsMenu> menuList = menuMapper.selectByExample(new UmsMenuExample());
-        List<UmsMenuNode> result = menuList.stream()
-                .filter(menu -> menu.getParentId().equals(0L))
-                .map(menu-> covertMenuNode(menu, menuList))
-                .collect(Collectors.toList());
+//        List<UmsMenuNode> result = menuList.stream()
+//                .filter(menu -> menu.getParentId().equals(0L))
+//                .map(menu-> covertMenuNode(menu, menuList))
+//                .collect(Collectors.toList());
+
+        List<UmsMenu> firstMenus = new ArrayList<>();
+        List<UmsMenuNode> result = new ArrayList<>();
+        for (UmsMenu umsMenu : menuList) {
+            if (umsMenu.getParentId() == 0L) {
+                firstMenus.add(umsMenu);
+            }
+        }
+        for (UmsMenu firstMenu : firstMenus) {
+            UmsMenuNode firstNode = covertMenuNode(firstMenu, menuList);
+            result.add(firstNode); 
+        }
         return result;
+    }
+
+    private UmsMenuNode covertMenuNode(UmsMenu menu, List<UmsMenu> menuList) {
+        UmsMenuNode node = new UmsMenuNode();
+        BeanUtils.copyProperties(menu, node);
+        List<UmsMenuNode> childrenList = new ArrayList<>();
+        for (UmsMenu subMenu : menuList) {
+            if (subMenu.getParentId().equals(menu.getId())) {
+                UmsMenuNode children = covertMenuNode(subMenu, menuList);
+                childrenList.add(children);
+            }
+        }
+        node.setChildren(childrenList);
+        return node;
     }
 
     private void updatelevel(UmsMenu umsMenu) {
@@ -68,18 +96,18 @@ public class UmsMenuServiceImpl implements UmsMenuService {
                 umsMenu.setLevel(parentMenu.getLevel() + 1);
             } else {
                 umsMenu.setLevel(0);
-            } 
-        } 
+            }
+        }
     }
 
-    private UmsMenuNode covertMenuNode(UmsMenu menu, List<UmsMenu> menuList) {
-        UmsMenuNode node = new UmsMenuNode();
-        BeanUtils.copyProperties(menu, node);
-        List<UmsMenuNode> children = menuList.stream()
-                .filter(subMenu -> subMenu.getParentId().equals(menu.getId()))
-                .map(subMenu -> covertMenuNode(subMenu, menuList)).collect(Collectors.toList());
-        node.setChildren(children);
-        return node;
-    }
+//    private UmsMenuNode covertMenuNode(UmsMenu menu, List<UmsMenu> menuList) {
+//        UmsMenuNode node = new UmsMenuNode();
+//        BeanUtils.copyProperties(menu, node);
+//        List<UmsMenuNode> children = menuList.stream()
+//                .filter(subMenu -> subMenu.getParentId().equals(menu.getId()))
+//                .map(subMenu -> covertMenuNode(subMenu, menuList)).collect(Collectors.toList());
+//        node.setChildren(children);
+//        return node;
+//}
     
 }
