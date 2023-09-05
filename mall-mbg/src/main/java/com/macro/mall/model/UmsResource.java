@@ -7,15 +7,20 @@ import java.util.Date;
 public class UmsResource implements Serializable {
     private Long id;
 
-    private String name;
-
-    private String url;
-
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
+    @ApiModelProperty(value = "资源名称")
+    private String name;
+
+    @ApiModelProperty(value = "资源URL")
+    private String url;
+
+    @ApiModelProperty(value = "描述")
     private String description;
 
-    private String categoryId;
+    @ApiModelProperty(value = "资源分类ID")
+    private Long categoryId;
 
     private static final long serialVersionUID = 1L;
 
@@ -25,6 +30,14 @@ public class UmsResource implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getName() {
@@ -43,14 +56,6 @@ public class UmsResource implements Serializable {
         this.url = url;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -59,11 +64,11 @@ public class UmsResource implements Serializable {
         this.description = description;
     }
 
-    public String getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -74,9 +79,9 @@ public class UmsResource implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", createTime=").append(createTime);
         sb.append(", name=").append(name);
         sb.append(", url=").append(url);
-        sb.append(", createTime=").append(createTime);
         sb.append(", description=").append(description);
         sb.append(", categoryId=").append(categoryId);
         sb.append(", serialVersionUID=").append(serialVersionUID);

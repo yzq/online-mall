@@ -40,3 +40,4 @@ secure:
       - /admin/**
       - /role/**
       - /menu/**
+      - /resource/**
