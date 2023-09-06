@@ -10,8 +10,15 @@ import org.springframework.stereotype.Service;
 public class UmsResourceServiceImpl implements UmsResourceService {
     @Autowired
     private UmsResourceMapper resourceMapper;
+
     @Override
     public int create(UmsResource umsResource) {
         return resourceMapper.insert(umsResource);
+    }
+
+    @Override
+    public int update(Long id, UmsResource umsResource) {
+        umsResource.setId(id);
+        return resourceMapper.updateByPrimaryKeySelective(umsResource);
     }
 }
