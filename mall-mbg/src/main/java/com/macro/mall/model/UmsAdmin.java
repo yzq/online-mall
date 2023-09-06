@@ -28,7 +28,7 @@ public class UmsAdmin implements Serializable {
     private Date createTime;
 
     @ApiModelProperty(value = "最后登录")
-    private Date lastLogin;
+    private Date loginTime;
 
     @ApiModelProperty(value = "头像")
     private String icon;
@@ -99,12 +99,12 @@ public class UmsAdmin implements Serializable {
         this.createTime = createTime;
     }
 
-    public Date getLastLogin() {
-        return lastLogin;
+    public Date getLoginTime() {
+        return loginTime;
     }
 
-    public void setLastLogin(Date lastLogin) {
-        this.lastLogin = lastLogin;
+    public void setLoginTime(Date loginTime) {
+        this.loginTime = loginTime;
     }
 
     public String getIcon() {
@@ -129,7 +129,7 @@ public class UmsAdmin implements Serializable {
         sb.append(", note=").append(note);
         sb.append(", status=").append(status);
         sb.append(", createTime=").append(createTime);
-        sb.append(", lastLogin=").append(lastLogin);
+        sb.append(", loginTime=").append(loginTime);
         sb.append(", icon=").append(icon);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

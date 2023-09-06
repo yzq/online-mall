@@ -4,18 +4,14 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UmsResource implements Serializable {
+public class UmsResourceCategory implements Serializable {
     private Long id;
 
     private String name;
 
-    private String url;
-
     private Date createTime;
 
-    private String description;
-
-    private Long categoryId;
+    private Integer sort;
 
     private static final long serialVersionUID = 1L;
 
@@ -35,14 +31,6 @@ public class UmsResource implements Serializable {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -51,20 +39,12 @@ public class UmsResource implements Serializable {
         this.createTime = createTime;
     }
 
-    public String getDescription() {
-        return description;
+    public Integer getSort() {
+        return sort;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 
     @Override
@@ -75,10 +55,8 @@ public class UmsResource implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
-        sb.append(", url=").append(url);
         sb.append(", createTime=").append(createTime);
-        sb.append(", description=").append(description);
-        sb.append(", categoryId=").append(categoryId);
+        sb.append(", sort=").append(sort);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -635,63 +635,63 @@ public class UmsAdminExample {
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginIsNull() {
-            addCriterion("last_login is null");
+        public Criteria andLoginTimeIsNull() {
+            addCriterion("login_time is null");
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginIsNotNull() {
-            addCriterion("last_login is not null");
+        public Criteria andLoginTimeIsNotNull() {
+            addCriterion("login_time is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginEqualTo(Date value) {
-            addCriterion("last_login =", value, "lastLogin");
+        public Criteria andLoginTimeEqualTo(Date value) {
+            addCriterion("login_time =", value, "loginTime");
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginNotEqualTo(Date value) {
-            addCriterion("last_login <>", value, "lastLogin");
+        public Criteria andLoginTimeNotEqualTo(Date value) {
+            addCriterion("login_time <>", value, "loginTime");
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginGreaterThan(Date value) {
-            addCriterion("last_login >", value, "lastLogin");
+        public Criteria andLoginTimeGreaterThan(Date value) {
+            addCriterion("login_time >", value, "loginTime");
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginGreaterThanOrEqualTo(Date value) {
-            addCriterion("last_login >=", value, "lastLogin");
+        public Criteria andLoginTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("login_time >=", value, "loginTime");
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginLessThan(Date value) {
-            addCriterion("last_login <", value, "lastLogin");
+        public Criteria andLoginTimeLessThan(Date value) {
+            addCriterion("login_time <", value, "loginTime");
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginLessThanOrEqualTo(Date value) {
-            addCriterion("last_login <=", value, "lastLogin");
+        public Criteria andLoginTimeLessThanOrEqualTo(Date value) {
+            addCriterion("login_time <=", value, "loginTime");
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginIn(List<Date> values) {
-            addCriterion("last_login in", values, "lastLogin");
+        public Criteria andLoginTimeIn(List<Date> values) {
+            addCriterion("login_time in", values, "loginTime");
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginNotIn(List<Date> values) {
-            addCriterion("last_login not in", values, "lastLogin");
+        public Criteria andLoginTimeNotIn(List<Date> values) {
+            addCriterion("login_time not in", values, "loginTime");
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginBetween(Date value1, Date value2) {
-            addCriterion("last_login between", value1, value2, "lastLogin");
+        public Criteria andLoginTimeBetween(Date value1, Date value2) {
+            addCriterion("login_time between", value1, value2, "loginTime");
             return (Criteria) this;
         }
 
-        public Criteria andLastLoginNotBetween(Date value1, Date value2) {
-            addCriterion("last_login not between", value1, value2, "lastLogin");
+        public Criteria andLoginTimeNotBetween(Date value1, Date value2) {
+            addCriterion("login_time not between", value1, value2, "loginTime");
             return (Criteria) this;
         }
 

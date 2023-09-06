@@ -1,5 +1,6 @@
 package com.macro.mall.controller;
 
+import com.macro.mall.api.CommonPage;
 import com.macro.mall.api.CommonResult;
 import com.macro.mall.model.UmsResource;
 import com.macro.mall.service.UmsResourceService;
@@ -9,6 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @Api(tags = "UmsResourceController")
@@ -39,5 +42,43 @@ public class UmsResourceController {
         }
         return CommonResult.failed();
     }
-    
+
+    @ApiOperation("删除后台资源")
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult delete(@PathVariable Long id) {
+        int count = resourceService.delete(id);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("分页查询后台资源")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<CommonPage<UmsResource>> list(@RequestParam(required = false) String nameKeyword,
+                                                      @RequestParam(required = false) String urlKeyword,
+                                                      @RequestParam(required = false) Long categoryId,
+                                                      @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+        List<UmsResource> resourceList = resourceService.list(nameKeyword, urlKeyword, categoryId, pageSize, pageNum);
+        return CommonResult.success(CommonPage.restPage(resourceList));
+    }
+
+    @ApiOperation("根据ID获取资源详情")
+    @RequestMapping(value = "/getItem/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<UmsResource> getItem(@PathVariable Long id) {
+        UmsResource umsResource = resourceService.getItem(id);
+        return CommonResult.success(umsResource);
+    }
+
+    @ApiOperation("查询所有后台资源")
+    @RequestMapping(value = "/listAll", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<List<UmsResource>> listAll() {
+        List<UmsResource> resourceList = resourceService.listAll();
+        return CommonResult.success(resourceList);
+    }
 }
